@@ -23,7 +23,7 @@ public class SignInActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Nút Sign In
+        // Nút Sign In nè bà nội
         Button btnLogin = findViewById(R.id.buttonLogin);
         btnLogin.setOnClickListener(v -> {
             // Sau khi kiểm tra đăng nhập thành công -> vào HomeActivity
