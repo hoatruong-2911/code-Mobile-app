@@ -9,7 +9,7 @@
     android:padding="16dp"
     tools:context=".HomeActivity">
 
-    <!-- Nội dung chính là cái này á hả -->
+    <!-- Nội dung chính nè trời ơi  -->
 
     <!-- Bottom Navigation -->
     <ScrollView
