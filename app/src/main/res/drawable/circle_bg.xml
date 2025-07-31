@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Màu khi nhấn -->
+    <item android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="#BBBBBB"/> <!-- Màu xám đậm hơn khi nhấn -->
+        </shape>
+    </item>
+
+    <!-- Màu mặc định -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#DDDDDD"/> <!-- Màu xám nhạt khi bình thường -->
+        </shape>
+    </item>
+
+</selector>
