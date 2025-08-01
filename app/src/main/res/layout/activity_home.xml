@@ -87,6 +87,8 @@
                             android:layout_height="wrap_content"
                             android:text="Cherry Healthy"
                             android:textStyle="bold" />
+
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -129,9 +131,10 @@
         android:background="@android:color/white"
         app:itemIconTint="@color/nav_item_color"
         app:itemTextColor="@color/nav_item_color"
-        app:menu="@menu/bottom_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

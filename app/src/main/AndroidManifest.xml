@@ -12,21 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Truongthanhhoa2123110457"
         tools:targetApi="31">
-
-        <!-- SignInActivity làm launcher -->
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OrderActivity"
+            android:exported="false" /> <!-- SignInActivity làm launcher -->
         <activity
             android:name=".SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
-
         <activity
             android:name=".SignUpActivity"
             android:exported="false" />
