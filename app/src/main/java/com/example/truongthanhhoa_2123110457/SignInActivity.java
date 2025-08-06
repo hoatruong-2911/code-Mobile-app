@@ -47,6 +47,10 @@ public class SignInActivity extends AppCompatActivity {
                 {
                     // Sau khi kiểm tra đăng nhập thành công -> vào HomeActivity
                       Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+
+                      intent.putExtra("email",txtemail);
+                      intent.putExtra("pass", txtpass);
+
                       startActivity(intent);
                     //    finish(); // đóng SignInActivity để không quay lại khi bấm Back
                 }
@@ -54,8 +58,6 @@ public class SignInActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), "sai tài khoản hoặc mật khẩu ", duration);
                     toast.show();
                 }
-
-
 
 
 

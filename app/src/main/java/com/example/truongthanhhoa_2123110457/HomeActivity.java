@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -28,6 +29,15 @@ public class HomeActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        //lấy dữ liệu đã truyền từ SignInActivity qua bằng Intent.
+        Intent intent = getIntent();
+        String txtEmail = intent.getStringExtra("email");
+        String txtPass = intent.getStringExtra("pass");
+
+        //Lấy dữ liệu từ Intent và set vào TextView trong HomeActivity
+        TextView txtWelcome = findViewById(R.id.txtWelcome);
+        txtWelcome.setText("Xin chào " + txtEmail);
 
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);

@@ -34,17 +34,17 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         // bắt nút Sign Up qua Login
-        Button btnSignUp = findViewById(R.id.buttonSignUp);
-        btnSignUp.setOnClickListener(v -> {
-            // Sau này bạn sẽ thêm kiểm tra dữ liệu ở đây (Email, Password,...)
-
-            // Tạm thời điều hướng sang HomeActivity
-            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-            startActivity(intent);
-
-            // Nếu muốn đóng SignUp để không quay lại khi bấm Back
-            // finish();
-        });
+//        Button btnSignUp = findViewById(R.id.buttonSignUp);
+//        btnSignUp.setOnClickListener(v -> {
+//            // Sau này bạn sẽ thêm kiểm tra dữ liệu ở đây (Email, Password,...)
+//
+//            // Tạm thời điều hướng sang HomeActivity
+//            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+//            startActivity(intent);
+//
+//            // Nếu muốn đóng SignUp để không quay lại khi bấm Back
+//            // finish();
+//        });
 
     }
 }
