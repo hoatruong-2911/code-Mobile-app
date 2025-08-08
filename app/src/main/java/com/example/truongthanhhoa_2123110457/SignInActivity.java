@@ -25,11 +25,12 @@ import org.json.JSONObject;
 
 public class SignInActivity extends AppCompatActivity {
 
-    EditText edtEmail, edtPass;
+    // 🔹 Đổi từ edtEmail -> edtPhone
+    EditText edtPhone, edtPass;
     Button btnLogin;
 
     // URL API từ MockAPI đã tạo
-    String url = "https://68940f0ebe3700414e11e224.mockapi.io/logIncrete/users";
+    String url = "https://68940f0ebe3700414e11e224.mockapi.io/logIncrete/user";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,8 @@ public class SignInActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Ánh xạ view
-        edtEmail = findViewById(R.id.editTextEmail);
+        // 🔹 Ánh xạ view (đổi editTextEmail -> editTextPhone)
+        edtPhone = findViewById(R.id.editTextPhone);
         edtPass = findViewById(R.id.editTextPassword);
         btnLogin = findViewById(R.id.buttonLogin);
 
@@ -51,11 +52,11 @@ public class SignInActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputEmail = edtEmail.getText().toString().trim();
+                String inputPhone = edtPhone.getText().toString().trim(); // 🔹 Lấy số điện thoại
                 String inputPass = edtPass.getText().toString().trim();
 
                 // Kiểm tra dữ liệu rỗng
-                if (inputEmail.isEmpty() || inputPass.isEmpty()) {
+                if (inputPhone.isEmpty() || inputPass.isEmpty()) {
                     Toast.makeText(SignInActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -72,22 +73,21 @@ public class SignInActivity extends AppCompatActivity {
                                 for (int i = 0; i < response.length(); i++) {
                                     try {
                                         JSONObject user = response.getJSONObject(i);
-                                        String email = user.getString("email");
+                                        String phone = user.getString("phone"); // 🔹 Lấy số điện thoại
                                         String pass = user.getString("pass");
 
                                         // So sánh với thông tin người dùng nhập vào
-                                        if (inputEmail.equals(email) && inputPass.equals(pass)) {
+                                        if (inputPhone.equals(phone) && inputPass.equals(pass)) {
                                             isLoggedIn = true;
 
                                             // 👉 Lấy tên người dùng từ "fullName" hoặc "name"
                                             String fullName = user.has("fullName") ? user.getString("fullName") : user.getString("name");
 
-                                            // 👉 Truyền tên sang HomeActivity
+                                            // 👉 Truyền dữ liệu sang HomeActivity
                                             Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
-                                            intent.putExtra("fullName", fullName); // truyền dữ liệu
-                                            intent.putExtra("email", email); // 👈 THÊM DÒNG NÀY
+                                            intent.putExtra("fullName", fullName);
+                                            intent.putExtra("phone", phone); // 🔹 Truyền số điện thoại thay vì email
                                             startActivity(intent);
-                                         //   finish(); // Đóng màn hình login
                                             break;
                                         }
                                     } catch (Exception e) {
@@ -97,7 +97,7 @@ public class SignInActivity extends AppCompatActivity {
 
                                 // Nếu không tìm thấy tài khoản phù hợp
                                 if (!isLoggedIn) {
-                                    Toast.makeText(SignInActivity.this, "Sai email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignInActivity.this, "Sai số điện thoại hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -112,9 +112,8 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        // 🔹 Bắt sự kiện click nút Create New Account
+        // 🔹 Nút tạo tài khoản
         Button btnCreateAccount = findViewById(R.id.btnCreateAccount);
-
         btnCreateAccount.setOnClickListener(v -> {
             Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
             startActivity(intent);

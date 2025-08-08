@@ -5,15 +5,12 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,8 +18,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -45,26 +40,21 @@ public class HomeActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-
-
         });
 
-        //lấy dữ liệu đã truyền từ SignInActivity qua bằng Intent.
+        // 🔹 Nhận dữ liệu từ Intent khi đăng nhập thành công
         Intent intent = getIntent();
-        String txtEmail = intent.getStringExtra("email");
-        String txtPass = intent.getStringExtra("pass");
+        String fullName = intent.getStringExtra("fullName"); // Lấy tên từ SignInActivity
+        String phone = intent.getStringExtra("phone");       // Có thể cần nếu muốn hiển thị số điện thoại
 
-        // Nhận dữ liệu từ Intent
+        // 🔹 Hiển thị lời chào ngay lập tức mà KHÔNG cần gọi lại API
+        if (fullName != null && !fullName.isEmpty()) {
+            TextView txtWelcome = findViewById(R.id.txtWelcome);
+            txtWelcome.setText("Xin chào\n" + fullName + " !");
+        }
 
-        String fullName = intent.getStringExtra("fullName");
-
-        //Lấy dữ liệu từ Intent và set vào TextView trong HomeActivity
-//        TextView txtWelcome = findViewById(R.id.txtWelcome);
-//        txtWelcome.setText("Xin chào " + txtEmail);
-
-
+        // 🔹 Giữ nguyên phần BottomNavigation như cũ
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
 
@@ -83,18 +73,16 @@ public class HomeActivity extends AppCompatActivity {
             return false;
         });
 
-
-        getData();
+        // ❌ Bỏ gọi getData() vì đã có fullName từ Intent
+        // getData();
     }
 
+    // ❌ Hàm getData() không cần thiết nữa, nhưng nếu muốn dùng lại thì vẫn giữ
     private void getData() {
         String emailFromLogin = getIntent().getStringExtra("email");
-
-        // Dùng lại API user từ MockAPI
-        String userApiUrl = "https://68940f0ebe3700414e11e224.mockapi.io/logIncrete/users";
+        String userApiUrl = "https://68940f0ebe3700414e11e224.mockapi.io/logIncrete/user";
 
         mRequestQueue = Volley.newRequestQueue(this);
-
         mStringRequest = new StringRequest(Request.Method.GET, userApiUrl,
                 response -> {
                     try {
@@ -103,19 +91,15 @@ public class HomeActivity extends AppCompatActivity {
                             JSONObject user = jsonArray.getJSONObject(i);
                             String email = user.getString("email");
 
-                            // So sánh đúng người dùng đang đăng nhập
                             if (email.equals(emailFromLogin)) {
                                 String fullName = "";
-
-                                // Một số user có key là "name", một số là "fullName"
                                 if (user.has("fullName")) {
                                     fullName = user.getString("fullName");
                                 } else if (user.has("name")) {
                                     fullName = user.getString("name");
                                 }
-
                                 TextView txtWelcome = findViewById(R.id.txtWelcome);
-                                txtWelcome.setText("Xin chào\n " + fullName + " !");
+                                txtWelcome.setText("Xin chào\n" + fullName + " !");
                                 break;
                             }
                         }
@@ -131,5 +115,4 @@ public class HomeActivity extends AppCompatActivity {
 
         mRequestQueue.add(mStringRequest);
     }
-
 }
