@@ -4,8 +4,11 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,18 +18,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeActivity extends AppCompatActivity {
 
+
+
+    private ArrayList<String> titles = new ArrayList<>();
+    private ArrayList<String> imageUrls = new ArrayList<>();
+    private CustomAdapter customAdapter;
+    private ViewPager2 bannerViewPager;
+    private TabLayout bannerIndicator;
     private RequestQueue mRequestQueue;
     private StringRequest mStringRequest;
     private String url = "https://fakestoreapi.com/products";
@@ -41,6 +57,42 @@ public class HomeActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        // -------- hiện thị banner
+        // 🔹 1. Ánh xạ View
+        bannerViewPager = findViewById(R.id.bannerViewPager);
+        bannerIndicator = findViewById(R.id.bannerIndicator);
+
+        // 🔹 2. Tạo danh sách ảnh banner từ drawable
+        List<Integer> bannerImages = new ArrayList<>();
+        bannerImages.add(R.drawable.java);        // ảnh java.png
+        bannerImages.add(R.drawable.python);      // ảnh python.png
+        bannerImages.add(R.drawable.javascript);  // ảnh javascript.png
+
+        // 🔹 3. Gắn Adapter cho ViewPager2
+        BannerAdapter bannerAdapter = new BannerAdapter(bannerImages);
+        bannerViewPager.setAdapter(bannerAdapter);
+//        // Auto slide mỗi 3 giây
+//        Handler handler = new Handler();
+//        Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                int currentItem = bannerViewPager.getCurrentItem();
+//                int totalItem = bannerAdapter.getItemCount();
+//                int nextItem = (currentItem + 1) % totalItem; // quay lại ảnh đầu
+//                bannerViewPager.setCurrentItem(nextItem, true);
+//                handler.postDelayed(this, 3000); // 3 giây đổi ảnh
+//            }
+//        };
+//        handler.postDelayed(runnable, 3000);
+
+        // 🔹 4. Kết nối TabLayout indicator với ViewPager2
+        new TabLayoutMediator(bannerIndicator, bannerViewPager,
+                (tab, position) -> {
+                    // Không cần set text cho tab, chỉ làm chấm tròn
+                }).attach();
+        //-------------------------------
 
         // 🔹 Nhận dữ liệu từ Intent khi đăng nhập thành công
         Intent intent = getIntent();
@@ -59,8 +111,8 @@ public class HomeActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             if (id == R.id.nav_home) {
-                ScrollView mainContent = findViewById(R.id.mainContent);
-                mainContent.fullScroll(View.FOCUS_UP);
+                ListView mainContent = findViewById(R.id.list);
+                mainContent.smoothScrollToPosition(0);
                 return true;
             } else if (id == R.id.nav_order) {
                 startActivity(new Intent(HomeActivity.this, OrderActivity.class));
@@ -75,6 +127,11 @@ public class HomeActivity extends AppCompatActivity {
 
         // ❌ Bỏ gọi getData() vì đã có fullName từ Intent
         // getData();
+
+        loadProductListFromApi();
+
+
+
     }
 
     // ❌ Hàm getData() không cần thiết nữa, nhưng nếu muốn dùng lại thì vẫn giữ
@@ -114,5 +171,59 @@ public class HomeActivity extends AppCompatActivity {
                 });
 
         mRequestQueue.add(mStringRequest);
+
+
+
     }
+
+    //-------------------------------------
+
+    // 🆕 Hàm mới: Lấy dữ liệu sản phẩm từ API và hiển thị lên ListView
+    private void loadProductListFromApi() {
+        mRequestQueue = Volley.newRequestQueue(this);
+
+        mStringRequest = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+
+                        ArrayList<String> titles = new ArrayList<>();
+                        ArrayList<String> imageUrls = new ArrayList<>();
+                        ArrayList<String> prices = new ArrayList<>();
+                        ArrayList<String> categories = new ArrayList<>();
+                        ArrayList<String> ratings = new ArrayList<>();
+
+                        int itemCount = Math.min(jsonArray.length(), 10);
+                        for (int i = 0; i < itemCount; i++) {
+                            JSONObject productObj = jsonArray.getJSONObject(i);
+
+                            titles.add(productObj.getString("title"));
+                            imageUrls.add(productObj.getString("image"));
+                            prices.add("Price: $" + productObj.getDouble("price"));
+                            categories.add("Category: " + productObj.getString("category"));
+
+                            JSONObject ratingObj = productObj.getJSONObject("rating");
+                            ratings.add("Rating: " + ratingObj.getDouble("rate") + " (" + ratingObj.getInt("count") + ")");
+                        }
+
+                        ListView listView = findViewById(R.id.list);
+                        CustomAdapter customAdapter = new CustomAdapter(HomeActivity.this, titles, imageUrls, prices, categories, ratings);
+                        listView.setAdapter(customAdapter);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Lỗi xử lý dữ liệu sản phẩm", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                error -> {
+                    Log.i(TAG, "Error: " + error.toString());
+                    Toast.makeText(getApplicationContext(), "Lỗi kết nối API sản phẩm", Toast.LENGTH_SHORT).show();
+                });
+
+        mRequestQueue.add(mStringRequest);
+    }
+
+
+
+
 }

@@ -9,107 +9,113 @@
     android:padding="16dp"
     tools:context=".HomeActivity">
 
-    <!-- Nội dung chính cuộn được -->
-    <ScrollView
-        android:id="@+id/mainContent"
+    <!-- Header + Banner + Tiêu đề danh sách -->
+    <LinearLayout
+        android:id="@+id/headerSection"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="16dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="62dp"
+            android:orientation="vertical"
+            android:padding="8dp">
 
-            <!-- Header -->
+            <!-- Hàng 1: Thanh tìm kiếm + Xin chào + Avatar -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="62dp"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <!-- Hàng 1: Tiêu đề và Xin chào + Avatar -->
+                <EditText
+                    android:id="@+id/searchBarTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/search_bg"
+                    android:drawableStart="@android:drawable/ic_menu_search"
+                    android:drawablePadding="8dp"
+                    android:hint="Tìm kiếm sản phẩm..."
+                    android:padding="8dp"
+                    android:textSize="14sp" />
+
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- BẮT ĐẦU - Đã thay TextView "FoodMarket" bằng ô tìm kiếm -->
-                    <EditText
-                        android:id="@+id/searchBarTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="38dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/search_bg"
-                        android:drawableStart="@android:drawable/ic_menu_search"
-                        android:drawablePadding="8dp"
-                        android:hint="Tìm kiếm sản phẩm..."
-                        android:padding="8dp"
-                        android:textSize="14sp" />
-                    <!-- KẾT THÚC - Thay đổi -->
-
-                    <!-- Xin chào + Avatar bên phải -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <!-- Text Xin chào -->
-                        <TextView
-                            android:id="@+id/txtWelcome"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:text="Xin chào"
-                            android:textColor="@android:color/black"
-                            android:textSize="14sp" />
-
-                        <!-- Avatar -->
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/circle_bg"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_user" />
-                    </LinearLayout>
-                </LinearLayout>
-
-
-                <!-- Thanh tab indicator ngay dưới "FoodMarket" -->
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/bannerIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="4dp"
-                    app:tabIndicator="@drawable/tab_indicator"
-                    app:tabIndicatorFullWidth="false" />
+                    android:layout_marginStart="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtWelcome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Xin chào"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/circle_bg"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_user" />
+                </LinearLayout>
             </LinearLayout>
 
-            <!-- Banner sản phẩm -->
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/bannerViewPager"
-                android:layout_width="match_parent"
-                android:layout_height="106dp"
-                android:layout_marginTop="8dp" />
-
-            <!-- Tiêu đề danh sách món ăn -->
-            <TextView
+            <!-- Tab indicator -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/bannerIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="New Taste"
-                android:textStyle="bold" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                app:tabIndicator="@drawable/tab_indicator"
+                app:tabIndicatorFullWidth="false" />
         </LinearLayout>
-    </ScrollView>
+
+
+            <!-- Banner -->
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/bannerViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="138dp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/txtListTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="New Taste"
+            android:textStyle="bold"
+            android:paddingBottom="8dp"
+            />
+    </LinearLayout>
+
+    <!-- ListView cuộn độc lập -->
 
     <!-- Bottom Navigation -->
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:dividerHeight="12dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerSection"
+        app:layout_constraintVertical_bias="0.0" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
@@ -119,6 +125,7 @@
         app:itemTextColor="@color/nav_item_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
