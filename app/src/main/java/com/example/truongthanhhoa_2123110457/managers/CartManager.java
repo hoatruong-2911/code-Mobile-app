@@ -1,4 +1,7 @@
-package com.example.truongthanhhoa_2123110457;
+package com.example.truongthanhhoa_2123110457.managers;
+
+import com.example.truongthanhhoa_2123110457.models.CartItem;
+import com.example.truongthanhhoa_2123110457.models.Product;
 
 import java.util.ArrayList;
 import java.util.List;

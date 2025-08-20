@@ -1,4 +1,4 @@
-package com.example.truongthanhhoa_2123110457;
+package com.example.truongthanhhoa_2123110457.adapters;
 
 import android.view.LayoutInflater;
 
@@ -8,6 +8,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.truongthanhhoa_2123110457.R;
 
 import java.util.List;
 

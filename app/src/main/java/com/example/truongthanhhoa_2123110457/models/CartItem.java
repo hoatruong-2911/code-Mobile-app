@@ -1,17 +1,16 @@
-package com.example.truongthanhhoa_2123110457;
+package com.example.truongthanhhoa_2123110457.models;
 
-public class CartItem {
+import java.io.Serializable;
+
+public class CartItem implements Serializable {
     private Product product;
     private int quantity;
-
-    private boolean isSelected; // ✅ Thêm thuộc tính này
-
+    private boolean isSelected;
 
     public CartItem(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
-        this.isSelected = true; // Mặc định sản phẩm mới thêm vào giỏ hàng sẽ được chọn
-
+        this.isSelected = true;
     }
 
     public Product getProduct() {
@@ -30,12 +29,10 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    // ✅ Thêm phương thức getter cho isSelected
     public boolean isSelected() {
         return isSelected;
     }
 
-    // ✅ Thêm phương thức setter cho isSelected
     public void setSelected(boolean selected) {
         isSelected = selected;
     }

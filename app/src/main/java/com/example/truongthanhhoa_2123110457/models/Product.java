@@ -1,6 +1,8 @@
-package com.example.truongthanhhoa_2123110457;
+package com.example.truongthanhhoa_2123110457.models;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     private String id;
     private String title;
     private double price;

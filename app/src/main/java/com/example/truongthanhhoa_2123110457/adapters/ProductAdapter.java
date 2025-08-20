@@ -1,4 +1,4 @@
-package com.example.truongthanhhoa_2123110457;
+package com.example.truongthanhhoa_2123110457.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,11 @@ import com.bumptech.glide.Glide;
 
 import java.text.DecimalFormat;
 import java.util.List;
+
+import com.example.truongthanhhoa_2123110457.managers.CartManager;
+import com.example.truongthanhhoa_2123110457.models.Product;
+import com.example.truongthanhhoa_2123110457.R;
+import com.example.truongthanhhoa_2123110457.activities.DetailActivity;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private Context context;

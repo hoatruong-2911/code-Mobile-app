@@ -1,4 +1,4 @@
-package com.example.truongthanhhoa_2123110457;
+package com.example.truongthanhhoa_2123110457.models;
 
 public class Category {
     private String name;      // Tên category

@@ -15,16 +15,19 @@
         android:theme="@style/Theme.Truongthanhhoa2123110457"
         tools:targetApi="31">
         <activity
-            android:name=".DetailActivity"
+            android:name=".activities.CheckoutActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activities.DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderActivity"
+            android:name=".activities.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.OrderActivity"
             android:exported="false" /> <!-- SignInActivity làm launcher -->
         <activity
-            android:name=".SignInActivity"
+            android:name=".activities.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,10 +36,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomeActivity"
+            android:name=".activities.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".activities.SignUpActivity"
             android:exported="false" />
     </application>
 

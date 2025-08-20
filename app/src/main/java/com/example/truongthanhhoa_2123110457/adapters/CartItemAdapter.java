@@ -1,4 +1,4 @@
-package com.example.truongthanhhoa_2123110457;
+package com.example.truongthanhhoa_2123110457.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.example.truongthanhhoa_2123110457.models.CartItem;
+import com.example.truongthanhhoa_2123110457.managers.CartManager;
+import com.example.truongthanhhoa_2123110457.models.Product;
+import com.example.truongthanhhoa_2123110457.R;
+
 import java.text.DecimalFormat;
 import java.util.List;
 

@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OrderActivity">
+
+    tools:context=".activities.OrderActivity">
 
     <TextView
         android:id="@+id/txtEmptyCart"

@@ -1,4 +1,4 @@
-package com.example.truongthanhhoa_2123110457;
+package com.example.truongthanhhoa_2123110457.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +24,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.truongthanhhoa_2123110457.adapters.BannerAdapter;
+import com.example.truongthanhhoa_2123110457.models.Category;
+import com.example.truongthanhhoa_2123110457.adapters.CategoryAdapter;
+import com.example.truongthanhhoa_2123110457.models.Product;
+import com.example.truongthanhhoa_2123110457.adapters.ProductAdapter;
+import com.example.truongthanhhoa_2123110457.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;

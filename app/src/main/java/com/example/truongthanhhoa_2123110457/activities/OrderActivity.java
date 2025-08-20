@@ -1,5 +1,7 @@
-package com.example.truongthanhhoa_2123110457;
+// OrderActivity.java
+package com.example.truongthanhhoa_2123110457.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,9 +16,16 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.truongthanhhoa_2123110457.models.CartItem;
+import com.example.truongthanhhoa_2123110457.adapters.CartItemAdapter;
+import com.example.truongthanhhoa_2123110457.managers.CartManager;
+import com.example.truongthanhhoa_2123110457.R;
+import com.example.truongthanhhoa_2123110457.activities.CheckoutActivity; // Import the CheckoutActivity
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable; // Import Serializable
 
 public class OrderActivity extends AppCompatActivity implements CartItemAdapter.OnCartUpdateListener {
 
@@ -52,8 +61,11 @@ public class OrderActivity extends AppCompatActivity implements CartItemAdapter.
             if (selectedItems.isEmpty()) {
                 Toast.makeText(this, "Vui lòng chọn sản phẩm để thanh toán!", Toast.LENGTH_SHORT).show();
             } else {
-                // TODO: Xử lý logic thanh toán thực tế cho các sản phẩm đã chọn
-                Toast.makeText(this, "Đang xử lý thanh toán cho " + selectedItems.size() + " sản phẩm...", Toast.LENGTH_SHORT).show();
+                // Khởi tạo Intent để chuyển sang CheckoutActivity
+                Intent intent = new Intent(OrderActivity.this, CheckoutActivity.class);
+                // Truyền dữ liệu các sản phẩm đã chọn
+                intent.putExtra("selectedItems", (Serializable) new ArrayList<CartItem>(selectedItems));
+                startActivity(intent);
             }
         });
     }
@@ -69,7 +81,7 @@ public class OrderActivity extends AppCompatActivity implements CartItemAdapter.
             findViewById(R.id.bottomLayout).setVisibility(View.GONE);
         } else {
             txtEmptyCart.setVisibility(TextView.GONE);
-            rcvOrderItems.setVisibility(RecyclerView.VISIBLE);
+            rcvOrderItems.setVisibility(View.VISIBLE);
             // Hiển thị layout tổng tiền
             findViewById(R.id.bottomLayout).setVisibility(View.VISIBLE);
 
@@ -86,7 +98,7 @@ public class OrderActivity extends AppCompatActivity implements CartItemAdapter.
         updateTotalPrice();
         // Kiểm tra lại nếu giỏ hàng rỗng thì ẩn layout tổng tiền
         if (CartManager.getInstance().getCartItems().isEmpty()) {
-            txtEmptyCart.setVisibility(TextView.VISIBLE);
+            txtEmptyCart.setVisibility(View.VISIBLE);
             findViewById(R.id.bottomLayout).setVisibility(View.GONE);
         } else {
             txtEmptyCart.setVisibility(View.GONE);

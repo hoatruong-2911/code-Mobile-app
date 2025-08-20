@@ -1,5 +1,5 @@
 // DetailActivity.java
-package com.example.truongthanhhoa_2123110457;
+package com.example.truongthanhhoa_2123110457.activities;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -15,6 +15,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.truongthanhhoa_2123110457.managers.CartManager;
+import com.example.truongthanhhoa_2123110457.models.Product;
+import com.example.truongthanhhoa_2123110457.R;
 
 import org.json.JSONObject;
 
