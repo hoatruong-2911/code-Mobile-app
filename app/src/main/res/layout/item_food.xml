@@ -12,7 +12,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher_background"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/java"
+        android:background="@drawable/javascript"
         android:clipToOutline="true"/>
 
     <!-- Thông tin món ăn -->

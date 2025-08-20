@@ -25,11 +25,8 @@ import org.json.JSONObject;
 
 public class SignInActivity extends AppCompatActivity {
 
-    // 🔹 Đổi từ edtEmail -> edtPhone
     EditText edtPhone, edtPass;
     Button btnLogin;
-
-    // URL API từ MockAPI đã tạo
     String url = "https://68940f0ebe3700414e11e224.mockapi.io/logIncrete/user";
 
     @Override
@@ -43,51 +40,56 @@ public class SignInActivity extends AppCompatActivity {
             return insets;
         });
 
-        // 🔹 Ánh xạ view (đổi editTextEmail -> editTextPhone)
         edtPhone = findViewById(R.id.editTextPhone);
         edtPass = findViewById(R.id.editTextPassword);
         btnLogin = findViewById(R.id.buttonLogin);
 
-        // Sự kiện click nút đăng nhập
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputPhone = edtPhone.getText().toString().trim(); // 🔹 Lấy số điện thoại
+                String inputPhone = edtPhone.getText().toString().trim();
                 String inputPass = edtPass.getText().toString().trim();
 
-                // Kiểm tra dữ liệu rỗng
                 if (inputPhone.isEmpty() || inputPass.isEmpty()) {
                     Toast.makeText(SignInActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // Gửi yêu cầu GET đến API Mock để lấy danh sách user
                 RequestQueue queue = Volley.newRequestQueue(SignInActivity.this);
                 JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray response) {
                                 boolean isLoggedIn = false;
-
-                                // Duyệt mảng JSON trả về
                                 for (int i = 0; i < response.length(); i++) {
                                     try {
                                         JSONObject user = response.getJSONObject(i);
-                                        String phone = user.getString("phone"); // 🔹 Lấy số điện thoại
+                                        String phone = user.getString("phone");
                                         String pass = user.getString("pass");
 
-                                        // So sánh với thông tin người dùng nhập vào
                                         if (inputPhone.equals(phone) && inputPass.equals(pass)) {
                                             isLoggedIn = true;
 
-                                            // 👉 Lấy tên người dùng từ "fullName" hoặc "name"
+                                            // ✅ Lấy toàn bộ dữ liệu người dùng từ JSON Object
                                             String fullName = user.has("fullName") ? user.getString("fullName") : user.getString("name");
+                                            String dob = user.getString("dob");
+                                            String gender = user.getString("gender");
+                                            String address = user.getString("address");
+                                            String email = user.getString("email");
+                                            String id = user.getString("id");
 
-                                            // 👉 Truyền dữ liệu sang HomeActivity
+                                            // ✅ Tạo Intent và truyền tất cả dữ liệu sang HomeActivity
                                             Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
+                                            intent.putExtra("id", id);
                                             intent.putExtra("fullName", fullName);
-                                            intent.putExtra("phone", phone); // 🔹 Truyền số điện thoại thay vì email
+                                            intent.putExtra("phone", phone);
+                                            intent.putExtra("dob", dob);
+                                            intent.putExtra("gender", gender);
+                                            intent.putExtra("address", address);
+                                            intent.putExtra("email", email);
+
                                             startActivity(intent);
+                                            finish(); // Kết thúc activity hiện tại
                                             break;
                                         }
                                     } catch (Exception e) {
@@ -95,7 +97,6 @@ public class SignInActivity extends AppCompatActivity {
                                     }
                                 }
 
-                                // Nếu không tìm thấy tài khoản phù hợp
                                 if (!isLoggedIn) {
                                     Toast.makeText(SignInActivity.this, "Sai số điện thoại hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                                 }
@@ -107,12 +108,10 @@ public class SignInActivity extends AppCompatActivity {
                     }
                 });
 
-                // Thêm request vào hàng đợi
                 queue.add(jsonArrayRequest);
             }
         });
 
-        // 🔹 Nút tạo tài khoản
         Button btnCreateAccount = findViewById(R.id.btnCreateAccount);
         btnCreateAccount.setOnClickListener(v -> {
             Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
