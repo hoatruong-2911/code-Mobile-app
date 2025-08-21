@@ -31,6 +31,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.productList = productList;
     }
 
+    // ✅ Phương thức updateList duy nhất, dùng để cập nhật danh sách sản phẩm
+    public void updateList(List<Product> newList) {
+        this.productList = newList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,28 +49,23 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Product product = productList.get(position);
 
         holder.txtTitle.setText(product.getTitle());
-        double usdPrice = product.getPrice(); // Giá từ API
-        double vndPrice = usdPrice * 25000;   // Quy đổi sang VNĐ
+        double usdPrice = product.getPrice();
+        double vndPrice = usdPrice * 25000;
 
         DecimalFormat df = new DecimalFormat("#,###");
         holder.txtPrice.setText(df.format(vndPrice) + "đ");
 
-        // Load ảnh bằng Glide
         Glide.with(context)
                 .load(product.getImage())
                 .into(holder.imgProduct);
 
-        // 👉 Sự kiện click nút Xem chi tiết
         holder.btnViewDetail.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
-            intent.putExtra("productId", product.getId()); // truyền id sang trang chi tiết
+            intent.putExtra("productId", product.getId());
             context.startActivity(intent);
         });
 
-        // ✅ Thêm sự kiện click cho nút Thêm vào giỏ hàng
-        // Xử lý sự kiện click vào nút thêm giỏ hàng (hoặc toàn bộ item)
         holder.btnAddToCart.setOnClickListener(v -> {
-            // ✅ Sửa lỗi tại đây: Thêm tham số số lượng là 1
             CartManager.getInstance().addItem(product, 1);
             Toast.makeText(context, "Đã thêm " + product.getTitle() + " vào giỏ hàng!", Toast.LENGTH_SHORT).show();
         });
@@ -76,7 +77,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgProduct, btnViewDetail, btnAddToCart; // ✅ Thêm btnAddToCart
+        ImageView imgProduct, btnViewDetail, btnAddToCart;
         TextView txtTitle, txtPrice;
 
         public ProductViewHolder(@NonNull View itemView) {
@@ -84,16 +85,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             imgProduct = itemView.findViewById(R.id.imgProduct);
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtPrice = itemView.findViewById(R.id.txtPrice);
-            btnViewDetail = itemView.findViewById(R.id.btn_view_detail); // ánh xạ nút chi tiết
-            btnAddToCart = itemView.findViewById(R.id.btn_add_cart); // ✅ Ánh xạ nút giỏ hàng
+            btnViewDetail = itemView.findViewById(R.id.btn_view_detail);
+            btnAddToCart = itemView.findViewById(R.id.btn_add_cart);
         }
     }
-
-
-    // danh mục
-    public void updateList(List<Product> list) {
-        this.productList = list;
-        notifyDataSetChanged();
-    }
-
 }

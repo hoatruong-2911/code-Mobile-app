@@ -1,4 +1,5 @@
-// OrderActivity.java
+// File: app/src/main/java/com/example/truongthanhhoa_2123110457/activities/OrderActivity.java
+
 package com.example.truongthanhhoa_2123110457.activities;
 
 import android.content.Intent;
@@ -20,12 +21,12 @@ import com.example.truongthanhhoa_2123110457.models.CartItem;
 import com.example.truongthanhhoa_2123110457.adapters.CartItemAdapter;
 import com.example.truongthanhhoa_2123110457.managers.CartManager;
 import com.example.truongthanhhoa_2123110457.R;
-import com.example.truongthanhhoa_2123110457.activities.CheckoutActivity; // Import the CheckoutActivity
+import com.example.truongthanhhoa_2123110457.activities.CheckoutActivity;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.Serializable; // Import Serializable
+import java.io.Serializable;
 
 public class OrderActivity extends AppCompatActivity implements CartItemAdapter.OnCartUpdateListener {
 
@@ -52,51 +53,48 @@ public class OrderActivity extends AppCompatActivity implements CartItemAdapter.
         txtTotalPrice = findViewById(R.id.txtTotalPrice);
         btnCheckout = findViewById(R.id.btnCheckout);
 
-        // ✅ Cài đặt RecyclerView và listener
-        setupCartRecyclerView();
-
         // ✅ Xử lý sự kiện khi click nút thanh toán
         btnCheckout.setOnClickListener(v -> {
             List<CartItem> selectedItems = getSelectedItems();
             if (selectedItems.isEmpty()) {
                 Toast.makeText(this, "Vui lòng chọn sản phẩm để thanh toán!", Toast.LENGTH_SHORT).show();
             } else {
-                // Khởi tạo Intent để chuyển sang CheckoutActivity
                 Intent intent = new Intent(OrderActivity.this, CheckoutActivity.class);
-                // Truyền dữ liệu các sản phẩm đã chọn
                 intent.putExtra("selectedItems", (Serializable) new ArrayList<CartItem>(selectedItems));
                 startActivity(intent);
             }
         });
     }
 
-    // ✅ Phương thức cài đặt RecyclerView
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // ✅ Cập nhật giỏ hàng mỗi khi Activity hiển thị trở lại
+        setupCartRecyclerView();
+    }
+
     private void setupCartRecyclerView() {
         List<CartItem> cartItems = CartManager.getInstance().getCartItems();
 
         if (cartItems.isEmpty()) {
             txtEmptyCart.setVisibility(TextView.VISIBLE);
             rcvOrderItems.setVisibility(RecyclerView.GONE);
-            // Ẩn layout tổng tiền nếu giỏ hàng trống
             findViewById(R.id.bottomLayout).setVisibility(View.GONE);
         } else {
-            txtEmptyCart.setVisibility(TextView.GONE);
+            txtEmptyCart.setVisibility(View.GONE);
             rcvOrderItems.setVisibility(View.VISIBLE);
-            // Hiển thị layout tổng tiền
             findViewById(R.id.bottomLayout).setVisibility(View.VISIBLE);
 
             rcvOrderItems.setLayoutManager(new LinearLayoutManager(this));
-            cartItemAdapter = new CartItemAdapter(this, cartItems, this); // Truyền listener
+            cartItemAdapter = new CartItemAdapter(this, cartItems, this);
             rcvOrderItems.setAdapter(cartItemAdapter);
         }
-        updateTotalPrice(); // ✅ Cập nhật tổng tiền ngay khi khởi tạo
+        updateTotalPrice();
     }
 
-    // ✅ Phương thức cập nhật tổng tiền
     @Override
     public void onCartUpdated() {
         updateTotalPrice();
-        // Kiểm tra lại nếu giỏ hàng rỗng thì ẩn layout tổng tiền
         if (CartManager.getInstance().getCartItems().isEmpty()) {
             txtEmptyCart.setVisibility(View.VISIBLE);
             findViewById(R.id.bottomLayout).setVisibility(View.GONE);
@@ -108,7 +106,6 @@ public class OrderActivity extends AppCompatActivity implements CartItemAdapter.
 
     private void updateTotalPrice() {
         double total = 0;
-        // Chỉ tính tổng tiền của các sản phẩm đã được chọn
         for (CartItem item : CartManager.getInstance().getCartItems()) {
             if (item.isSelected()) {
                 total += item.getProduct().getPrice() * item.getQuantity();
@@ -120,7 +117,6 @@ public class OrderActivity extends AppCompatActivity implements CartItemAdapter.
         txtTotalPrice.setText(df.format(vndTotal));
     }
 
-    // ✅ Phương thức lấy danh sách sản phẩm đã chọn
     private List<CartItem> getSelectedItems() {
         List<CartItem> selectedItems = new ArrayList<>();
         for (CartItem item : CartManager.getInstance().getCartItems()) {

@@ -5,6 +5,7 @@ import com.example.truongthanhhoa_2123110457.models.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator; // Thêm import cho Iterator
 
 public class CartManager {
     private static CartManager instance;
@@ -21,10 +22,7 @@ public class CartManager {
         return instance;
     }
 
-    // Phương thức mới để thêm sản phẩm với số lượng tùy chỉnh.
-    // Phương thức này sẽ kiểm tra xem sản phẩm đã có trong giỏ hàng chưa.
-    // Nếu có, nó sẽ cộng thêm số lượng mới vào số lượng hiện có.
-    // Nếu chưa, nó sẽ thêm sản phẩm mới với số lượng đã chọn.
+    // Phương thức để thêm sản phẩm với số lượng tùy chỉnh.
     public void addItem(Product product, int quantity) {
         for (CartItem item : cartItems) {
             if (item.getProduct().getId().equals(product.getId())) {
@@ -35,9 +33,24 @@ public class CartManager {
         cartItems.add(new CartItem(product, quantity));
     }
 
-    // Các phương thức khác giữ nguyên.
+    // ✅ Phương thức mới để xóa sản phẩm dựa trên ID
+    public void removeItemById(String productId) {
+        Iterator<CartItem> iterator = cartItems.iterator();
+        while (iterator.hasNext()) {
+            CartItem item = iterator.next();
+            if (item.getProduct().getId().equals(productId)) {
+                iterator.remove();
+                // Thoát khỏi vòng lặp sau khi xóa
+                return;
+            }
+        }
+    }
+
+    // ✅ Sửa phương thức removeItem để sử dụng removeItemById
+    // Chúng ta vẫn giữ phương thức này để tránh lỗi ở những chỗ khác.
+    // Hoặc bạn có thể xóa nó và sửa lại tất cả các chỗ gọi.
     public void removeItem(CartItem item) {
-        cartItems.remove(item);
+        removeItemById(item.getProduct().getId());
     }
 
     public void increaseQuantity(CartItem item) {
